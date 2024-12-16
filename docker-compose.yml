@@ -2,29 +2,23 @@ version: '3'
 
 services:
   db:
-    image: mysql:5.7    # Utilisation de l'image officielle MySQL pour la base de données
+    image: database   
     container_name: app_database
     environment:
-      MYSQL_ROOT_PASSWORD: passwd  # Le mot de passe root de MySQL
-      MYSQL_DATABASE: mydb  # Vous pouvez spécifier un nom de base de données par défaut ici
+      MYSQL_ROOT_PASSWORD: passwd  
     build:
-      context: ./database/  # Répertoire où Dockerfile de la base de données est situé
-      dockerfile: Dockerfile  # Dockerfile spécifique pour la base de données
+      context: ./database/  
+      dockerfile: Dockerfile  
     ports:
-      - "9306:3306"  # Mappe le port MySQL à 9306 sur l'hôte
-    volumes:
-      - db_data:/var/lib/mysql  # Volume Docker pour persister les données de la base de données
-
+      - "9306:3306"  
   web:
     depends_on:
-      - db  # Dépendance au service db pour s'assurer qu'il démarre avant
-    image: app  # Vous pouvez spécifier une image ou construire à partir du Dockerfile local
+      - db  
+    image: app  
     container_name: app
     build:
-      context: .  # Utilisation du répertoire actuel pour la construction de l'application
-      dockerfile: Dockerfile  # Dockerfile spécifique pour l'application web
+      context: . 
+      dockerfile: Dockerfile  
     ports:
-      - "3000:80"  # Mappe le port 80 du conteneur à 3000 sur l'hôte
+      - "3000:80" 
 
-volumes:
-  db_data:  # Déclare le volume persistant pour la base de données
